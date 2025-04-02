@@ -15,6 +15,8 @@ export async function getToken(
     headers: {'Content-Type': 'application/json'}
   })
   if (!response.ok) {
+    const resp = await response.json()
+    core.debug(`Response: ${resp}`)
     throw new Error(
       `Unexpected response: ${response.status} ${response.statusText}`
     )
