@@ -6,10 +6,10 @@ export async function getToken(
   password: string
 ): Promise<string> {
   const body = {
-    username: username,
-    password: password
+    identifier: username,
+    secret: password
   }
-  const response = await fetch('https://hub.docker.com/v2/users/login', {
+  const response = await fetch('https://hub.docker.com/v2/auth/token', {
     method: 'post',
     body: JSON.stringify(body),
     headers: {'Content-Type': 'application/json'}
@@ -20,8 +20,8 @@ export async function getToken(
     )
   }
   const json = await response.json()
-  core.setSecret(json['token'])
-  return json['token']
+  core.setSecret(json['access_token'])
+  return json['access_token']
 }
 
 export async function updateRepositoryDescription(
