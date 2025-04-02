@@ -56,7 +56,7 @@ function getToken(username, password) {
         if (!response.ok) {
             const resp = yield response.json();
             core.debug(`Response: ${resp}`);
-            throw new Error(`Unexpected response: ${response.status} ${response.statusText}`);
+            throw new Error(`Unexpected response: ${response.status} ${response.statusText}\n${resp}`);
         }
         const json = yield response.json();
         core.setSecret(json['access_token']);

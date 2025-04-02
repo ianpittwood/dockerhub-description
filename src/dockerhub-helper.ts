@@ -18,7 +18,7 @@ export async function getToken(
     const resp = await response.json()
     core.debug(`Response: ${resp}`)
     throw new Error(
-      `Unexpected response: ${response.status} ${response.statusText}`
+      `Unexpected response: ${response.status} ${response.statusText}\n${resp}`
     )
   }
   const json = await response.json()
