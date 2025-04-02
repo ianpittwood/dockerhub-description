@@ -15,10 +15,8 @@ export async function getToken(
     headers: {'Content-Type': 'application/json'}
   })
   if (!response.ok) {
-    const resp = await response.json()
-    core.debug(`Response: ${resp}`)
     throw new Error(
-      `Unexpected response: ${response.status} ${response.statusText}\n${resp}`
+      `Unexpected response: ${response.status} ${response.statusText}`
     )
   }
   const json = await response.json()
@@ -43,11 +41,14 @@ export async function updateRepositoryDescription(
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `JWT ${token}`
+      Authorization: `Bearer ${token}`
     }
   }).then(res => {
     if (!res.ok) {
-      throw new Error(res.statusText)
+      const resJson = res.json()
+      throw new Error(
+        `Unexpected response: ${res.status} ${res.statusText}\n${resJson}`
+      )
     }
   })
 }
