@@ -45,20 +45,22 @@ const fetch = __importStar(__nccwpck_require__(6705));
 function getToken(username, password) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = {
-            username: username,
-            password: password
+            identifier: username,
+            secret: password
         };
-        const response = yield fetch('https://hub.docker.com/v2/users/login', {
+        const response = yield fetch('https://hub.docker.com/v2/auth/token', {
             method: 'post',
             body: JSON.stringify(body),
             headers: { 'Content-Type': 'application/json' }
         });
         if (!response.ok) {
+            const resp = yield response.json();
+            core.debug(`Response: ${resp}`);
             throw new Error(`Unexpected response: ${response.status} ${response.statusText}`);
         }
         const json = yield response.json();
-        core.setSecret(json['token']);
-        return json['token'];
+        core.setSecret(json['access_token']);
+        return json['access_token'];
     });
 }
 exports.getToken = getToken;
