@@ -36,19 +36,22 @@ export async function updateRepositoryDescription(
   if (description) {
     body['description'] = description
   }
-  await fetch(`https://hub.docker.com/v2/repositories/${repository}`, {
-    method: 'patch',
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+  const response = await fetch(
+    `https://hub.docker.com/v2/repositories/${repository}`,
+    {
+      method: 'patch',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     }
-  }).then(res => {
-    if (!res.ok) {
-      const resJson = res.json()
-      throw new Error(
-        `Unexpected response: ${res.status} ${res.statusText}\n${resJson}`
-      )
-    }
-  })
+  )
+  if (!response.ok) {
+    const resJson = await response.json()
+    throw new Error(
+      `Unexpected response: ${response.status} ${response.statusText}\n${resJson}`
+    )
+  }
+  return response
 }

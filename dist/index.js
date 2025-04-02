@@ -70,19 +70,19 @@ function updateRepositoryDescription(token, repository, description, fullDescrip
         if (description) {
             body['description'] = description;
         }
-        yield fetch(`https://hub.docker.com/v2/repositories/${repository}`, {
+        const response = yield fetch(`https://hub.docker.com/v2/repositories/${repository}`, {
             method: 'patch',
             body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             }
-        }).then(res => {
-            if (!res.ok) {
-                const resJson = res.json();
-                throw new Error(`Unexpected response: ${res.status} ${res.statusText}\n${resJson}`);
-            }
         });
+        if (!response.ok) {
+            const resJson = yield response.json();
+            throw new Error(`Unexpected response: ${response.status} ${response.statusText}\n${resJson}`);
+        }
+        return response;
     });
 }
 exports.updateRepositoryDescription = updateRepositoryDescription;
