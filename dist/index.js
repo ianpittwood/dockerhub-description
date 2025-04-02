@@ -80,7 +80,8 @@ function updateRepositoryDescription(token, repository, description, fullDescrip
         });
         if (!response.ok) {
             const resJson = yield response.json();
-            throw new Error(`Unexpected response: ${response.status} ${response.statusText}\n${resJson}`);
+            core.debug(resJson);
+            throw new Error(`Unexpected response: ${response.status} ${response.statusText}`);
         }
         return response;
     });

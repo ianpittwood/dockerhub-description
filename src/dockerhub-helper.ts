@@ -49,8 +49,9 @@ export async function updateRepositoryDescription(
   )
   if (!response.ok) {
     const resJson = await response.json()
+    core.debug(resJson)
     throw new Error(
-      `Unexpected response: ${response.status} ${response.statusText}\n${resJson}`
+      `Unexpected response: ${response.status} ${response.statusText}`
     )
   }
   return response
